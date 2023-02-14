@@ -1,12 +1,8 @@
+// This module has functions to do calculations using the decimal system, thus eliminating errors due to the imprecise binary system.
 module decimalcal;
 
-/*
-    This module creates a way to perform calculations using the decimal system so there will be no
-    more errors due to the computer's imprecise binary system.
-*/
-
 import std.algorithm.searching : canFind;
-import std.array : join, split;
+import std.array : replace, split;
 import std.bigint : BigInt;
 import std.conv : to;
 import std.string : format;
@@ -29,9 +25,9 @@ void zeroing(ref string a, ref string b)
                 b = '0' ~ b;
     // in case the numbers are negative, the loop above pushed the "-" sign away
     if (canFind(a, '-'))
-        a = '-' ~ join(a.split('-'));
+        a = '-' ~ replace(a, "-", "");
     if (canFind(b, '-'))
-        b = '-' ~ join(b.split('-'));
+        b = '-' ~ replace(b, "-", "");
 }
 
 // this function organizes the numbers so they will have the same number of place values
@@ -73,8 +69,8 @@ void organize(ref string a, ref string b)
 // this function pushes the radix point to the very end
 void bubbleRadixes(ref string a, ref string b)
 {
-    a = join(split(a, '.')) ~ '.';
-    b = join(split(b, '.')) ~ '.';
+    a = replace(a, ".", "") ~ '.';
+    b = replace(b, ".", "") ~ '.';
 }
 
 // this function adds the operands
@@ -85,7 +81,7 @@ string add(string a, string b)
     // first we organize them so they will have the same number of decimal places
     organize(a, b);
     // now we store the number of decimal places that will be removed from both of them to make them integers
-    ulong n = a.split('.')[1].length;
+    ulong n = split(a, '.')[1].length;
     // here we bubble the radix point so they will be integers
     bubbleRadixes(a, b);
     // now we store the number's size (without the radix point)
@@ -99,14 +95,14 @@ string add(string a, string b)
     bool negative = canFind(result, '-');
     // this is for the case when there was a "-" sign in the result, the loop above just pushed it away from the beginning
     if (negative)
-        result = '-' ~ join(result.split('-'));
-    // now we add the radix point at the correct place
+        result = '-' ~ replace(result, "-", "");
+    // now we add the radix point in the correct place
     n = result.length - n;
     result = result[0 .. n] ~ '.' ~ result[n .. $];
     // this is to round the last digit and remove it afterwards, we make sure it doesn't create an infinite recursion
-    if (result.split('.')[1].length >= 21)
+    if (split(result, '.')[1].length >= 21)
     {
-        result = result[0 .. $ - (result.split('.')[1].length - 21)];
+        result = result[0 .. $ - (split(result, '.')[1].length - 21)];
         if (result[$ - 1] >= '5')
             result = add(result[0 .. $ - 1], "0.00000000000000000001");
         else
@@ -128,7 +124,7 @@ string subtract(string a, string b)
     // first we organize them so they will have the same number of decimal places
     organize(a, b);
     // now we store the number of decimal places that will be removed from both of them to make them integers
-    ulong n = a.split('.')[1].length;
+    ulong n = split(a, '.')[1].length;
     // here we bubble the radix point so they will be integers
     bubbleRadixes(a, b);
     // now we store the number's size (without the radix point)
@@ -142,15 +138,15 @@ string subtract(string a, string b)
     bool negative = canFind(result, '-');
     // this is for the case when there was a "-" sign in the result, the loop above just pushed it away from the beginning
     if (negative)
-        result = '-' ~ join(result.split('-'));
+        result = '-' ~ replace(result, "-", "");
     // now we add the radix point at the correct place, notice the length of the result here may be different from before
     // in case you subtract 2 positive numbers and the result is negative, in this case the "-" sign will make it longer
     n = result.length - n;
     result = result[0 .. n] ~ '.' ~ result[n .. $];
     // this is to round the last digit and remove it afterwards
-    if (result.split('.')[1].length >= 21)
+    if (split(result, '.')[1].length >= 21)
     {
-        result = result[0 .. $ - (result.split('.')[1].length - 21)];
+        result = result[0 .. $ - (split(result, '.')[1].length - 21)];
         if (result[$ - 1] >= '5')
             result = add(result[0 .. $ - 1], "0.00000000000000000001");
         else
@@ -175,7 +171,7 @@ string multiply(string a, string b)
     // first we organize them so they will have the same number of decimal places
     organize(a, b);
     // now we store the number of decimal places that will be removed from both of them to make them integers
-    ulong n = a.split('.')[1].length * 2;
+    ulong n = split(a, '.')[1].length * 2;
     // here we bubble the radix point so they will be integers
     bubbleRadixes(a, b);
     // now we multiply them as integers and store as a string
@@ -187,9 +183,9 @@ string multiply(string a, string b)
     while (result[$ - 1] == '0')
         result = result[0 .. $ - 1];
     // this is to round the last digit and remove it afterwards
-    if (result.split('.')[1].length >= 21)
+    if (split(result, '.')[1].length >= 21)
     {
-        result = result[0 .. $ - (result.split('.')[1].length - 21)];
+        result = result[0 .. $ - (split(result, '.')[1].length - 21)];
         if (result[$ - 1] >= '5')
             result = add(result[0 .. $ - 1], "0.00000000000000000001");
         else
@@ -225,9 +221,9 @@ string divide(string a, string b)
         result ~= to!string(rest / divisor);
     }
     // this is to round the last digit and remove it afterwards
-    if (result.split('.')[1].length >= 21)
+    if (split(result, '.')[1].length >= 21)
     {
-        result = result[0 .. $ - (result.split('.')[1].length - 21)];
+        result = result[0 .. $ - (split(result, '.')[1].length - 21)];
         if (result[$ - 1] >= '5')
             result = add(result[0 .. $ - 1], "0.00000000000000000001");
         else
