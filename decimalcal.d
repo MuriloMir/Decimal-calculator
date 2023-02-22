@@ -58,6 +58,8 @@ string addOrSubtract(string a, string b, char operator)
         // if b is positive but a is negative then we do b - |a| because -x + y = y - x
         else if (a[0] == '-')
             return addOrSubtract(b, a[1 .. $], '-');
+    // first we organize them so they will have the same number of decimal places
+    zeroing(a, b);
     // we change the operations in case you are subtracting and you have negative operands or you have b > a
     if (operator == '-')
         // if b is negative then in this case we do a + |b| because x - -y = x + y
@@ -69,8 +71,6 @@ string addOrSubtract(string a, string b, char operator)
         // if you are trying to subtract a number from another one smaller then we swap the operation and add the negative sign in front of it
         else if (BigInt(replace(a, ".", "")) < BigInt(replace(b, ".", "")))
             return '-' ~ addOrSubtract(b, a, '-');
-    // first we organize them so they will have the same number of decimal places
-    zeroing(a, b);
     // now we store the number of decimal places that will be removed from both of them to make them integers
     ulong decimalPlaces = split(a, '.')[1].length;
     // here we remove the radix point so they will be integers
@@ -83,8 +83,7 @@ string addOrSubtract(string a, string b, char operator)
     if (result.length < size)
         result = format("%0*d", size - result.length, 0) ~ result;
     // now we add the radix point in the correct place
-    decimalPlaces = size - decimalPlaces;
-    result = result[0 .. decimalPlaces] ~ '.' ~ result[decimalPlaces .. $];
+    result = result[0 .. $ - decimalPlaces] ~ '.' ~ result[$ - decimalPlaces .. $];
     // this is to round the last digit and remove it afterwards, we check if the decimal part went beyond the precision
     if (split(result, '.')[1].length > precision)
         roundLastDigit(result);
