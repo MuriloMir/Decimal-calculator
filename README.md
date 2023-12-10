@@ -8,3 +8,5 @@ It contains the functions addOrSubtract(), multiply(), divide(), power() and roo
 There is a variable called precision which can be used to set the precision, it is 20 by default, but you can define it to be any number bigger than 0, as in precision = 10 or precision = 65. Never define it as 0.
 
 E.g. addOrSubtract("2.5", "0.004", '+'), addOrSubtract("-2.5", "0.004", '-'), multiply("-2.5", "0.004"), divide("-2.5", "-0.004"), power("12.0", "4.0"), root("10.9", "4.0");
+
+It is very fast, running on my AMD FX-4300 CPU it was able to perform 183k additions per sec, 134k subtractions per sec, 240k multiplications per sec, 31k divisions per sec, 30k powers per sec and 80 roots per sec, all with a precision of 20 digits, very impressive. I know the roots are much slower than the other operations, but it is still quite fast.
