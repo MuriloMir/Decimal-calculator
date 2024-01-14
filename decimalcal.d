@@ -504,7 +504,7 @@ string root(string radicand, string index, bool originalCall = true)
             approxResult = power(midPoint, index, false);
             // take the difference between the approximate result and the radicand, to see how close it got
             difference = addOrSubtract(radicand, approxResult, '-', false);
-    
+
             // if the difference was negative
             if (difference[0] == '-')
             {
@@ -532,3 +532,225 @@ string root(string radicand, string index, bool originalCall = true)
     // remove the doubled extra 0s and return it
     return removeExtraZeros(midPoint);
 }
+
+// this is a code to test if this module is working properly
+/*import std.stdio;
+import std.datetime.stopwatch;
+import decimalcal;
+
+void main()
+{
+    precision = 2;
+
+    assert(addOrSubtract("12.0", "4.0", '+') == "16.0");
+    assert(addOrSubtract("4.0", "12.0", '+') == "16.0");
+    assert(addOrSubtract("0.1", "0.4", '+') == "0.5");
+    assert(addOrSubtract("0.4", "0.1", '+') == "0.5");
+    assert(addOrSubtract("0.1", "0.403", '+') == "0.5");
+    assert(addOrSubtract("0.403", "0.1", '+') == "0.5");
+    assert(addOrSubtract("0.1", "0.408", '+') == "0.51");
+    assert(addOrSubtract("0.408", "0.1", '+') == "0.51");
+    assert(addOrSubtract("0.408", "-0.1", '+') == "0.31");
+    assert(addOrSubtract("-0.408", "0.1", '+') == "-0.31");
+    assert(addOrSubtract("-0.408", "-0.1", '+') == "-0.51");
+    assert(addOrSubtract("-0.1", "-0.408", '+') == "-0.51");
+
+    assert(addOrSubtract("12.0", "4.0", '-') == "8.0");
+    assert(addOrSubtract("0.4", "0.1", '-') == "0.3");
+    assert(addOrSubtract("0.403", "0.1", '-') == "0.3");
+    assert(addOrSubtract("0.408", "0.1", '-') == "0.31");
+    assert(addOrSubtract("4.0", "12.0", '-') == "-8.0");
+    assert(addOrSubtract("0.1", "0.4", '-') == "-0.3");
+    assert(addOrSubtract("0.1", "0.403", '-') == "-0.3");
+    assert(addOrSubtract("0.1", "0.408", '-') == "-0.31");
+    assert(addOrSubtract("0.1", "-0.408", '-') == "0.51");
+    assert(addOrSubtract("-0.1", "0.408", '-') == "-0.51");
+    assert(addOrSubtract("-0.1", "-0.408", '-') == "0.31");
+    assert(addOrSubtract("-0.408", "-0.1", '-') == "-0.31");
+
+    assert(multiply("12.0", "4.0") == "48.0");
+    assert(multiply("0.4", "0.1") == "0.04");
+    assert(multiply("0.403", "0.1") == "0.04");
+    assert(multiply("0.488", "0.1") == "0.05");
+    assert(multiply("4.0", "12.0") == "48.0");
+    assert(multiply("0.1", "0.4") == "0.04");
+    assert(multiply("0.1", "0.403") == "0.04");
+    assert(multiply("0.1", "0.488") == "0.05");
+    assert(multiply("0.1", "-0.408") == "-0.04");
+    assert(multiply("-0.1", "0.408") == "-0.04");
+    assert(multiply("-0.1", "-0.408") == "0.04");
+    assert(multiply("-0.488", "-0.1") == "0.05");
+
+    assert(divide("12.0", "4.0") == "3.0");
+    assert(divide("0.4", "0.1") == "4.0");
+    assert(divide("0.403", "0.1") == "4.03");
+    assert(divide("0.488", "0.1") == "4.88");
+    assert(divide("4.0", "12.0") == "0.33");
+    assert(divide("0.1", "0.4") == "0.25");
+    assert(divide("0.1", "0.403") == "0.25");
+    assert(divide("0.1", "0.488") == "0.2");
+    assert(divide("0.1", "-0.408") == "-0.25");
+    assert(divide("-0.1", "0.408") == "-0.25");
+    assert(divide("-0.1", "-0.408") == "0.25");
+    assert(divide("-0.488", "-0.1") == "4.88");
+
+    assert(power("12.0", "4.0") == "20736.0");
+    assert(power("0.4", "1.0") == "0.4");
+    assert(power("0.403", "2.0") == "0.16");
+    assert(power("0.488", "-1.0") == "2.05");
+    assert(power("0.0", "12.0") == "0.0");
+    assert(power("15.0", "0.0") == "1.0");
+    assert(power("-15.0", "0.0") == "1.0");
+    assert(power("0.1", "6.0") == "0.0");
+    assert(power("0.0", "0.0") == "1.0");
+    assert(power("-3.2", "5.0") == "-335.54");
+    assert(power("-12.75", "4.0") == "26426.57");
+    assert(power("1.0", "72.0") == "1.0");
+
+    assert(root("4.0", "2.0") == "2.0");
+    assert(root("8.0", "3.0") == "2.0");
+    assert(root("2.0", "1.0") == "2.0");
+    assert(root("1.0", "6.0") == "1.0");
+    assert(root("2.5", "3.0") == "1.36");
+    assert(root("10.9", "4.0") == "1.82");
+    assert(root("10.9", "1.0") == "10.9");
+    assert(root("0.9", "2.0") == "0.95");
+    assert(root("0.19", "1.0") == "0.19");
+    assert(root("0.04", "2.0") == "0.2");
+    assert(root("0.1", "4.0") == "0.56");
+    assert(root("0.005", "3.0") == "0.17");
+
+    precision = 20;
+    float addTime, subtractTime, multiplyTime, divideTime, powerTime, rootTime;
+    StopWatch watch = StopWatch(AutoStart.yes);
+
+    foreach (i; 0 .. 10000)
+    {
+        addOrSubtract("12.0", "4.0", '+');
+        addOrSubtract("4.0", "12.0", '+');
+        addOrSubtract("0.1", "0.4", '+');
+        addOrSubtract("0.4", "0.1", '+');
+        addOrSubtract("0.1", "0.403", '+');
+        addOrSubtract("0.403", "0.1", '+');
+        addOrSubtract("0.1", "0.408", '+');
+        addOrSubtract("0.408", "0.1", '+');
+        addOrSubtract("0.408", "-0.1", '+');
+        addOrSubtract("-0.408", "0.1", '+');
+        addOrSubtract("-0.408", "-0.1", '+');
+        addOrSubtract("-0.1", "-0.408", '+');
+    }
+
+    watch.stop();
+    addTime = cast(float) watch.peek().total!"msecs"();
+    writeln("addition: ", addTime, ' ', 120000.0 / addTime, " per msec");
+    watch.reset();
+    watch.start();
+
+    foreach (i; 0 .. 10000)
+    {
+        addOrSubtract("12.0", "4.0", '-');
+        addOrSubtract("0.4", "0.1", '-');
+        addOrSubtract("0.403", "0.1", '-');
+        addOrSubtract("0.408", "0.1", '-');
+        addOrSubtract("4.0", "12.0", '-');
+        addOrSubtract("0.1", "0.4", '-');
+        addOrSubtract("0.1", "0.403", '-');
+        addOrSubtract("0.1", "0.408", '-');
+        addOrSubtract("0.1", "-0.408", '-');
+        addOrSubtract("-0.1", "0.408", '-');
+        addOrSubtract("-0.1", "-0.408", '-');
+        addOrSubtract("-0.408", "-0.1", '-');
+    }
+
+    watch.stop();
+    subtractTime = cast(float) watch.peek().total!"msecs"();
+    writeln("subtraction: ", subtractTime, ' ', 120000.0 / subtractTime, " per msec");
+    watch.reset();
+    watch.start();
+
+    foreach (i; 0 .. 10000)
+    {
+        multiply("12.0", "4.0");
+        multiply("0.4", "0.1");
+        multiply("0.403", "0.1");
+        multiply("0.488", "0.1");
+        multiply("4.0", "12.0");
+        multiply("0.1", "0.4");
+        multiply("0.1", "0.403");
+        multiply("0.1", "0.488");
+        multiply("0.1", "-0.408");
+        multiply("-0.1", "0.408");
+        multiply("-0.1", "-0.408");
+        multiply("-0.488", "-0.1");
+    }
+
+    watch.stop();
+    multiplyTime = cast(float) watch.peek().total!"msecs"();
+    writeln("multiplication: ", multiplyTime, ' ', 120000.0 / multiplyTime, " per msec");
+    watch.reset();
+    watch.start();
+
+    foreach (i; 0 .. 10000)
+    {
+        divide("12.0", "4.0");
+        divide("0.4", "0.1");
+        divide("0.403", "0.1");
+        divide("0.488", "0.1");
+        divide("4.0", "12.0");
+        divide("0.1", "0.4");
+        divide("0.1", "0.403");
+        divide("0.1", "0.488");
+        divide("0.1", "-0.408");
+        divide("-0.1", "0.408");
+        divide("-0.1", "-0.408");
+        divide("-0.488", "-0.1");
+    }
+
+    watch.stop();
+    divideTime = cast(float) watch.peek().total!"msecs"();
+    writeln("division: ", divideTime, ' ', 120000.0 / divideTime, " per msec");
+    watch.reset();
+    watch.start();
+
+    foreach (i; 0 .. 10000)
+    {
+        power("12.0", "4.0");
+        power("0.4", "1.0");
+        power("0.403", "2.0");
+        power("0.488", "-1.0");
+        power("0.0", "12.0");
+        power("15.0", "0.0");
+        power("-15.0", "0.0");
+        power("0.1", "6.0");
+        power("0.0", "0.0");
+        power("-3.2", "5.0");
+        power("-12.75", "4.0");
+        power("1.0", "72.0");
+    }
+
+    watch.stop();
+    powerTime = cast(float) watch.peek().total!"msecs"();
+    writeln("power: ", powerTime, ' ', 120000.0 / powerTime, " per msec");
+    watch.reset();
+    watch.start();
+
+    foreach (i; 0 .. 100)
+    {
+        root("4.0", "2.0");
+        root("8.0", "3.0");
+        root("2.0", "1.0");
+        root("1.0", "6.0");
+        root("2.5", "3.0");
+        root("10.9", "4.0");
+        root("10.9", "1.0");
+        root("0.9", "2.0");
+        root("0.19", "1.0");
+        root("0.04", "2.0");
+        root("0.1", "4.0");
+        root("0.005", "3.0");
+    }
+
+    watch.stop();
+    rootTime = cast(float) watch.peek().total!"msecs"();
+    writeln("root: ", rootTime, ' ', 1200.0 / rootTime, " per msec");
+}*/
