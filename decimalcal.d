@@ -1,7 +1,9 @@
 // This module has functions to perform calculations using the decimal system, thus eliminating errors caused by the imprecise binary system.
 
+// give it a name
 module decimalcal;
 
+// import the tools we need
 import std.array : replace, split;
 import std.bigint : BigInt;
 import std.conv : to;
