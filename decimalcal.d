@@ -534,3 +534,40 @@ string root(string radicand, string index, bool originalCall = true)
     // remove the doubled extra 0s and return it
     return removeExtraZeros(midPoint);
 }
+
+// this function lets you do any computations by typing the first operand, the operation symbol and then the second operand, thus making the code more understandable
+string compute(string firstOperand, char operationSymbol, string secondOperand)
+{
+    // check which operation you are performing
+    switch (operationSymbol)
+    {
+        // if you are adding numbers
+        case '+':
+            // use the 'addOrSubtract()' function with an addition operator and return the value
+            return addOrSubtract(firstOperand, secondOperand, '+');
+        // if you are subtracting numbers
+        case '-':
+            // use the 'addOrSubtract()' function with a subtraction operator and return the value
+            return addOrSubtract(firstOperand, secondOperand, '-');
+        // if you are multiplying numbers
+        case '*':
+            // use the 'multiply()' function and return the value
+            return multiply(firstOperand, secondOperand);
+        // if you are dividing numbers
+        case '/':
+            // use the 'divide()' function and return the value
+            return divide(firstOperand, secondOperand);
+        // if you are calculating a power
+        case '^':
+            // use the 'power()' function and return the value
+            return power(firstOperand, secondOperand);
+        // if you are calculating a root
+        case 'r':
+            // use the 'root()' function and return the value
+            return root(firstOperand, secondOperand);
+        // if you've typed the wrong symbol
+        default:
+            // create and error and display a message to instruct the user
+            assert(0, "The compute() function only accepts 6 operation symbols: '+' (addition), '-' (subtraction), '*' (multiplication), '/' (division), '^' (power) and 'r' (root).");
+    }
+}
