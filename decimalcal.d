@@ -541,33 +541,19 @@ string compute(string firstOperand, char operationSymbol, string secondOperand)
     // check which operation you are performing
     switch (operationSymbol)
     {
-        // if you are adding numbers
-        case '+':
-            // use the 'addOrSubtract()' function with an addition operator and return the value
-            return addOrSubtract(firstOperand, secondOperand, '+');
-        // if you are subtracting numbers
-        case '-':
-            // use the 'addOrSubtract()' function with a subtraction operator and return the value
-            return addOrSubtract(firstOperand, secondOperand, '-');
-        // if you are multiplying numbers
-        case '*':
-            // use the 'multiply()' function and return the value
-            return multiply(firstOperand, secondOperand);
-        // if you are dividing numbers
-        case '/':
-            // use the 'divide()' function and return the value
-            return divide(firstOperand, secondOperand);
-        // if you are calculating a power
-        case '^':
-            // use the 'power()' function and return the value
-            return power(firstOperand, secondOperand);
-        // if you are calculating a root
-        case 'r':
-            // use the 'root()' function and return the value
-            return root(firstOperand, secondOperand);
-        // if you've typed the wrong symbol
-        default:
-            // create and error and display a message to instruct the user
-            assert(0, "The compute() function only accepts 6 operation symbols: '+' (addition), '-' (subtraction), '*' (multiplication), '/' (division), '^' (power) and 'r' (root).");
+        // if you are adding numbers, then use the 'addOrSubtract()' function with an addition operator and return the value
+        case '+': return addOrSubtract(firstOperand, secondOperand, '+');
+        // if you are subtracting numbers, then use the 'addOrSubtract()' function with a subtraction operator and return the value
+        case '-': return addOrSubtract(firstOperand, secondOperand, '-');
+        // if you are multiplying numbers, then use the 'multiply()' function and return the value
+        case '*': return multiply(firstOperand, secondOperand);
+        // if you are dividing numbers, then use the 'divide()' function and return the value
+        case '/': return divide(firstOperand, secondOperand);
+        // if you are calculating a power, then use the 'power()' function and return the value
+        case '^': return power(firstOperand, secondOperand);
+        // if you are calculating a root, then use the 'root()' function and return the value
+        case 'r': return root(firstOperand, secondOperand);
+        // if you've typed the wrong symbol, then create an error and display a message to instruct the user
+        default: assert(0, "The compute() function only accepts 6 operation symbols: '+' (addition), '-' (subtraction), '*' (multiplication), '/' (division), '^' (power) and 'r' (root).");
     }
 }
