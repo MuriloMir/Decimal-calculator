@@ -1,7 +1,7 @@
 // This module has functions to perform calculations using the decimal system, thus eliminating errors caused by the imprecise binary system.
 
 // give it a name
-module decimalcal;
+module decimalcalculator;
 
 // import the tools we need
 import std.array : replace, split;
@@ -557,3 +557,4 @@ string compute(string firstOperand, char operationSymbol, string secondOperand)
         default: assert(0, "The compute() function only accepts 6 operation symbols: '+' (addition), '-' (subtraction), '*' (multiplication), '/' (division), '^' (power) and 'r' (root).");
     }
 }
+
