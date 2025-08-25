@@ -5,7 +5,7 @@ To use it you only need to download the module into your project's folder and im
 
 It contains only the function compute(), which will receive 3 parameters: the first operand, the operation symbol and the second operand. Remember to write the numbers properly, always write them with no unnecessary 0s and with at least 1 decimal place, do NOT add a + sign in front, do it always as in "2.0" or "-1.0".
 
-If you want to calculate a modulo, then both operands must be positive integers. Also keep in mind it only works with powers which have an integer exponent, never try to calculate a number to the power of 1.5, or 0. And if you are calculating roots then it only works for non-negative numbers with a positive integer index, therefore never try to calculate the square root of -3.0, the 0 root of a number, the -2.0 root of a number or the 1.5 root of a number.
+If you want to calculate a modulo, then both operands must be positive integers. Also keep in mind it only works with powers which have a positive integer exponent, never try to calculate a number to the power of 1.5, or 0. And if you are calculating roots then it only works for non-negative numbers with a positive integer index, therefore never try to calculate the square root of -3.0, the 0 root of a number, the -2.0 root of a number or the 1.5 root of a number.
 
 There is a variable called 'precision' which can be used to set the precision, it is 20 by default, but you can define it to be any number bigger than 0, as in precision = 10 or precision = 65. NEVER define it as 0.
 
