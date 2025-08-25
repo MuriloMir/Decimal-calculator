@@ -295,7 +295,6 @@ string multiply(string a, string b, bool originalCall = true)
 
     // add the radix point in the correct place
     result = result[0 .. $ - decimalPlaces] ~ '.' ~ result[$ - decimalPlaces .. $];
-
     // this is to return the precision to its original value before returning, if this function was the original call
     precision -= 5 * cast(int) originalCall;
 
@@ -400,7 +399,6 @@ string divide(string a, string b, bool originalCall = true)
 
     // do it 1 last time to make sure it will have at least 1 digit after the radix point
     result ~= to!string(remainder * 10 / divisor);
-
     // this is to return the precision to its original value before returning, if this function was the original call
     precision -= 5 * cast(int) originalCall;
 
@@ -411,6 +409,16 @@ string divide(string a, string b, bool originalCall = true)
 
     // remove the doubled extra 0s and return it
     return removeExtraZeros(result);
+}
+
+// this function calculates modulos, the numbers must be both positive
+string modulo(string a, string b)
+{
+    // remove the decimal part from the numbers, in order to make them integers
+    a = split(a, '.')[0], b = split(b, '.')[0];
+
+    // turn them into 'BigInt', calculate the modulo, turn it back into a string and add the decimal part, then return this result
+    return to!string(BigInt(a) % BigInt(b)) ~ ".0";
 }
 
 // this function calculates powers, the exponent must be an integer and the optional argument tells if it was called by you or by another function
@@ -549,14 +557,13 @@ string compute(string firstOperand, char operationSymbol, string secondOperand)
         case '*': return multiply(firstOperand, secondOperand);
         // if you are dividing numbers, then use the 'divide()' function and return the value
         case '/': return divide(firstOperand, secondOperand);
+        // if you are calculate the modulo of 2 numbers, then use the 'modulo()' function and return the value
+        case '%': return modulo(firstOperand, secondOperand);
         // if you are calculating a power, then use the 'power()' function and return the value
         case '^': return power(firstOperand, secondOperand);
         // if you are calculating a root, then use the 'root()' function and return the value
         case 'r': return root(firstOperand, secondOperand);
         // if you've typed the wrong symbol, then create an error and display a message to instruct the user
-        default: assert(0, "The compute() function only accepts 6 operation symbols: '+' (addition), '-' (subtraction), '*' (multiplication), '/' (division), '^' (power) and 'r' (root).");
+        default: assert(0, "The compute() function only accepts 7 operation symbols: '+' (addition), '-' (subtraction), '*' (multiplication), '/' (division), '%' (modulo), '^' (power) and 'r' (root).");
     }
 }
-
-
-
